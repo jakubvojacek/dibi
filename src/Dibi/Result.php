@@ -389,7 +389,7 @@ class Result implements IDataSource
 			}
 
 			// autodetect
-			$tmp = array_keys($row->toArray());
+			$tmp = array_keys($row);
 			$key = $tmp[0];
 			if (count($row) < 2) { // indexed-array
 				do {

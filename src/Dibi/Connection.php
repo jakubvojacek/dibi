@@ -561,7 +561,7 @@ class Connection implements IConnection
 	 * Executes SQL query and fetch result - shortcut for query() & fetch().
 	 * @throws Exception
 	 */
-	public function fetch(mixed ...$args): ?Row
+	public function fetch(mixed ...$args): ?array
 	{
 		return $this->query($args)->fetch();
 	}
