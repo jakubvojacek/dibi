@@ -569,7 +569,6 @@ class Connection implements IConnection
 
 	/**
 	 * Executes SQL query and fetch results - shortcut for query() & fetchAll().
-	 * @return Row[]|array[]
 	 * @throws Exception
 	 */
 	public function fetchAll(mixed ...$args): array
