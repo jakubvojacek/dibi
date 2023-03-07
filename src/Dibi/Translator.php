@@ -18,26 +18,17 @@ final class Translator
 	use Strict;
 
 	private Connection $connection;
-
 	private Driver $driver;
-
 	private int $cursor = 0;
-
 	private array $args;
 
 	/** @var string[] */
 	private array $errors;
-
 	private bool $comment = false;
-
 	private int $ifLevel = 0;
-
 	private int $ifLevelStart = 0;
-
 	private ?int $limit = null;
-
 	private ?int $offset = null;
-
 	private HashMap $identifiers;
 
 
@@ -162,8 +153,9 @@ final class Translator
 
 	/**
 	 * Apply modifier to single value.
+	 * @param  mixed  $value
 	 */
-	public function formatValue(mixed $value, ?string $modifier): string
+	public function formatValue($value, ?string $modifier): string
 	{
 		if ($this->comment) {
 			return '...';
@@ -314,6 +306,15 @@ final class Translator
 			}
 		}
 
+		if (is_object($value)
+			&& $modifier === null
+			&& !$value instanceof Literal
+			&& !$value instanceof Expression
+			&& $result = $this->connection->translateObject($value)
+		) {
+			return $this->connection->translate(...$result->getValues());
+		}
+
 		// object-to-scalar procession
 		if ($value instanceof \BackedEnum && is_scalar($value->value)) {
 			$value = $value->value;
@@ -401,13 +402,8 @@ final class Translator
 				case 'dt': // datetime
 					if ($value === null) {
 						return 'NULL';
-					} else {
-						if (is_string($value)) {
-							$value = (new \DateTimeImmutable())->setTimestamp(\strtotime($value));
-						} elseif (!$value instanceof \DateTimeInterface) {
-							$value = new DateTime($value);
-						}
-						return $modifier === 'd' ? $this->driver->escapeDate($value) : $this->driver->escapeDateTime($value);
+					} elseif (!$value instanceof \DateTimeInterface) {
+						$value = new DateTime($value);
 					}
 
 					return $modifier === 'd'
@@ -441,7 +437,7 @@ final class Translator
 																		:(\S*?:)([a-zA-Z0-9._]?)
 																	)/sx
 									XX
-,
+								,
 								[$this, 'cb'],
 								substr($value, $toSkip),
 							);
@@ -478,11 +474,6 @@ final class Translator
 				default:
 					return $this->errors[] = "**Unknown or unexpected modifier %$modifier**";
 			}
-		}
-
-		// object-to-scalar procession
-		if ($value instanceof \BackedEnum && is_scalar($value->value)) {
-			$value = $value->value;
 		}
 
 		// without modifier procession

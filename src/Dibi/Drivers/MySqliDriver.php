@@ -35,14 +35,10 @@ class MySqliDriver implements Dibi\Driver
 	use Dibi\Strict;
 
 	public const ERROR_ACCESS_DENIED = 1045;
-
 	public const ERROR_DUPLICATE_ENTRY = 1062;
-
 	public const ERROR_DATA_TRUNCATED = 1265;
 
 	private \mysqli $connection;
-
-	/** Is buffered (seekable and countable)? */
 	private bool $buffered = false;
 
 
@@ -60,6 +56,7 @@ class MySqliDriver implements Dibi\Driver
 		} else {
 			// default values
 			$config += [
+				'charset' => 'utf8',
 				'timezone' => date('P'),
 				'username' => ini_get('mysqli.default_user'),
 				'password' => ini_get('mysqli.default_pw'),

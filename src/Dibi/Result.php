@@ -23,18 +23,16 @@ class Result implements IDataSource
 
 	/** Translate table */
 	private array $types = [];
-
 	private ?Reflection\Result $meta;
 
 	/** Already fetched? Used for allowance for first seek(0) */
 	private bool $fetched = false;
 
 	/** returned object class */
-	private ?string $rowClass = null;
+	private ?string $rowClass = Row::class;
 
 	/** @var callable|null  returned object factory */
 	private $rowFactory;
-
 	private array $formats = [];
 
 

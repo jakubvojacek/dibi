@@ -28,9 +28,7 @@ class SqliteDriver implements Dibi\Driver
 	use Dibi\Strict;
 
 	private SQLite3 $connection;
-
 	private string $fmtDate;
-
 	private string $fmtDateTime;
 
 
@@ -289,7 +287,8 @@ class SqliteDriver implements Dibi\Driver
 		callable $rowCallback,
 		callable $agrCallback,
 		int $numArgs = -1,
-	): void {
+	): void
+	{
 		$this->connection->createAggregate($name, $rowCallback, $agrCallback, $numArgs);
 	}
 }
