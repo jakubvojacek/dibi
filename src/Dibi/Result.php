@@ -29,7 +29,7 @@ class Result implements IDataSource
 	private bool $fetched = false;
 
 	/** returned object class */
-	private ?string $rowClass = Row::class;
+	private ?string $rowClass = null;
 
 	/** @var callable|null  returned object factory */
 	private $rowFactory;
