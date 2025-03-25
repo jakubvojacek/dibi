@@ -15,8 +15,6 @@ namespace Dibi;
  */
 class Event
 {
-	use Strict;
-
 	/** event type */
 	public const
 		CONNECT = 1,
@@ -31,10 +29,10 @@ class Event
 		TRANSACTION = 448, // BEGIN | COMMIT | ROLLBACK
 		ALL = 1023;
 
-	public Connection $connection;
+	public readonly Connection $connection;
 	public int $type;
-	public string $sql;
-	public Result|DriverException|null $result;
+	public readonly string $sql;
+	public readonly Result|DriverException|null $result;
 	public float $time;
 	public ?int $count = null;
 	public ?array $source = null;

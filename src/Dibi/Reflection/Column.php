@@ -27,19 +27,10 @@ use Dibi;
  */
 class Column
 {
-	use Dibi\Strict;
-
-	/** when created by Result */
-	private ?Dibi\Reflector $reflector;
-
-	/** @var array (name, nativetype, [table], [fullname], [size], [nullable], [default], [autoincrement], [vendor]) */
-	private array $info;
-
-
-	public function __construct(?Dibi\Reflector $reflector, array $info)
-	{
-		$this->reflector = $reflector;
-		$this->info = $info;
+	public function __construct(
+		private readonly ?Dibi\Drivers\Engine $reflector,
+		private array $info,
+	) {
 	}
 
 

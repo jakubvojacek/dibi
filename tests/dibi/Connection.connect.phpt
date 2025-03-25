@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/bootstrap.php';
 
 
-test('', function () use ($config) {
+test('immediate connection and disconnection state', function () use ($config) {
 	$conn = new Connection($config);
 	Assert::true($conn->isConnected());
 
@@ -21,7 +21,7 @@ test('', function () use ($config) {
 });
 
 
-test('lazy', function () use ($config) {
+test('lazy connection initiated on first query', function () use ($config) {
 	$conn = new Connection($config + ['lazy' => true]);
 	Assert::false($conn->isConnected());
 
@@ -30,17 +30,17 @@ test('lazy', function () use ($config) {
 });
 
 
-test('', function () use ($config) {
+test('config retrieval and driver instance access', function () use ($config) {
 	$conn = new Connection($config);
 	Assert::true($conn->isConnected());
 
 	Assert::null($conn->getConfig('lazy'));
 	Assert::same($config['driver'], $conn->getConfig('driver'));
-	Assert::type(Dibi\Driver::class, $conn->getDriver());
+	Assert::type(Dibi\Drivers\Connection::class, $conn->getDriver());
 });
 
 
-test('', function () use ($config) {
+test('idempotent disconnect calls', function () use ($config) {
 	$conn = new Connection($config);
 	Assert::true($conn->isConnected());
 
@@ -52,7 +52,7 @@ test('', function () use ($config) {
 });
 
 
-test('', function () use ($config) {
+test('reconnect after disconnection', function () use ($config) {
 	$conn = new Connection($config);
 	Assert::equal('hello', $conn->query('SELECT %s', 'hello')->fetchSingle());
 
@@ -63,7 +63,7 @@ test('', function () use ($config) {
 });
 
 
-test('', function () use ($config) {
+test('destructor disconnects active connection', function () use ($config) {
 	$conn = new Connection($config);
 	Assert::true($conn->isConnected());
 
@@ -72,25 +72,30 @@ test('', function () use ($config) {
 });
 
 
-test('', function () use ($config) {
-	Assert::exception(function () use ($config) {
-		new Connection($config + ['onConnect' => '']);
-	}, InvalidArgumentException::class, "Configuration option 'onConnect' must be array.");
+test('invalid onConnect option triggers exceptions', function () use ($config) {
+	Assert::exception(
+		fn() => new Connection($config + ['onConnect' => '']),
+		InvalidArgumentException::class,
+		"Configuration option 'onConnect' must be array.",
+	);
 
-	$e = Assert::exception(function () use ($config) {
-		new Connection($config + ['onConnect' => ['STOP']]);
-	}, Dibi\DriverException::class);
+	$e = Assert::exception(
+		fn() => new Connection($config + ['onConnect' => ['STOP']]),
+		Dibi\DriverException::class,
+	);
 	Assert::same('STOP', $e->getSql());
 
-	$e = Assert::exception(function () use ($config) {
-		new Connection($config + ['onConnect' => [['STOP %i', 123]]]);
-	}, Dibi\DriverException::class);
+	$e = Assert::exception(
+		fn() => new Connection($config + ['onConnect' => [['STOP %i', 123]]]),
+		Dibi\DriverException::class,
+	);
 	Assert::same('STOP 123', $e->getSql());
 
 	// lazy
 	$conn = new Connection($config + ['lazy' => true, 'onConnect' => ['STOP']]);
-	$e = Assert::exception(function () use ($conn) {
-		$conn->query('SELECT 1');
-	}, Dibi\DriverException::class);
+	$e = Assert::exception(
+		fn() => $conn->query('SELECT 1'),
+		Dibi\DriverException::class,
+	);
 	Assert::same('STOP', $e->getSql());
 });

@@ -15,9 +15,7 @@ namespace Dibi;
  */
 class Literal
 {
-	use Strict;
-
-	private string $value;
+	private readonly string $value;
 
 
 	public function __construct($value)

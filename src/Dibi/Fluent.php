@@ -27,6 +27,8 @@ namespace Dibi;
  * @method Fluent innerJoin(...$table)
  * @method Fluent rightJoin(...$table)
  * @method Fluent outerJoin(...$table)
+ * @method Fluent union(Fluent $fluent)
+ * @method Fluent unionAll(Fluent $fluent)
  * @method Fluent as(...$field)
  * @method Fluent on(...$cond)
  * @method Fluent and(...$cond)
@@ -43,9 +45,13 @@ namespace Dibi;
  */
 class Fluent implements IDataSource
 {
-	use Strict;
+	public const
+		AffectedRows = 'a',
+		Identifier = 'n',
+		Remove = false;
 
-	public const REMOVE = false;
+	#[\Deprecated('use Fluent::Remove')]
+	public const REMOVE = self::Remove;
 
 	public static array $masks = [
 		'SELECT' => ['SELECT', 'DISTINCT', 'FROM', 'WHERE', 'GROUP BY',
@@ -91,7 +97,7 @@ class Fluent implements IDataSource
 		'RIGHT JOIN' => 'FROM',
 	];
 
-	private Connection $connection;
+	private readonly Connection $connection;
 	private array $setups = [];
 	private ?string $command = null;
 	private array $clauses = [];
@@ -107,7 +113,7 @@ class Fluent implements IDataSource
 		$this->connection = $connection;
 
 		if (!isset(self::$normalizer)) {
-			self::$normalizer = new HashMap([self::class, '_formatClause']);
+			self::$normalizer = new HashMap(self::_formatClause(...));
 		}
 	}
 
@@ -140,7 +146,7 @@ class Fluent implements IDataSource
 			$this->cursor = &$this->clauses[$clause];
 
 			// TODO: really delete?
-			if ($args === [self::REMOVE]) {
+			if ($args === [self::Remove]) {
 				$this->cursor = null;
 				return $this;
 			}
@@ -156,7 +162,7 @@ class Fluent implements IDataSource
 			}
 		} else {
 			// append to currect flow
-			if ($args === [self::REMOVE]) {
+			if ($args === [self::Remove]) {
 				return $this;
 			}
 
@@ -279,19 +285,17 @@ class Fluent implements IDataSource
 	/**
 	 * Generates and executes SQL query.
 	 * Returns result set or number of affected rows
+	 * @return ($return is self::Identifier|self::AffectedRows ? int : Result)
 	 * @throws Exception
 	 */
 	public function execute(?string $return = null): Result|int|null
 	{
 		$res = $this->query($this->_export());
-		switch ($return) {
-			case \dibi::IDENTIFIER:
-				return $this->connection->getInsertId();
-			case \dibi::AFFECTED_ROWS:
-				return $this->connection->getAffectedRows();
-			default:
-				return $res;
-		}
+		return match ($return) {
+			self::Identifier => $this->connection->getInsertId(),
+			self::AffectedRows => $this->connection->getAffectedRows(),
+			default => $res,
+		};
 	}
 
 

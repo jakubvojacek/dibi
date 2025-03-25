@@ -21,19 +21,14 @@ use Dibi;
  */
 class Database
 {
-	use Dibi\Strict;
-
-	private Dibi\Reflector $reflector;
-	private ?string $name;
-
 	/** @var Table[] */
 	private array $tables;
 
 
-	public function __construct(Dibi\Reflector $reflector, ?string $name = null)
-	{
-		$this->reflector = $reflector;
-		$this->name = $name;
+	public function __construct(
+		private readonly Dibi\Drivers\Engine $reflector,
+		private ?string $name = null,
+	) {
 	}
 
 

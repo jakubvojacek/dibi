@@ -91,9 +91,11 @@ Assert::same(
 );
 
 // invalid input
-$e = Assert::exception(function () use ($conn) {
-	$conn->translate('SELECT %s', (object) [123], ', %m', 123);
-}, Dibi\Exception::class, 'SQL translate error: Invalid combination of type stdClass and modifier %s');
+$e = Assert::exception(
+	fn() => $conn->translate('SELECT %s', (object) [123], ', %m', 123),
+	Dibi\Exception::class,
+	'SQL translate error: Invalid combination of type stdClass and modifier %s',
+);
 Assert::same('SELECT **Invalid combination of type stdClass and modifier %s** , **Unknown or unexpected modifier %m**', $e->getSql());
 
 Assert::same(
@@ -176,9 +178,10 @@ Assert::same(
 );
 
 if ($config['system'] === 'odbc') {
-	Assert::exception(function () use ($conn) {
-		$conn->translate('SELECT * FROM [products] %lmt %ofs', 2, 1);
-	}, Dibi\Exception::class);
+	Assert::exception(
+		fn() => $conn->translate('SELECT * FROM [products] %lmt %ofs', 2, 1),
+		Dibi\Exception::class,
+	);
 } else {
 	// with limit = 2, offset = 1
 	Assert::same(
@@ -226,9 +229,11 @@ Assert::same(
 	]),
 );
 
-Assert::exception(function () use ($conn) {
-	$conn->translate('SELECT %s', new DateTime('1212-09-26'));
-}, Dibi\Exception::class, 'SQL translate error: Invalid combination of type Dibi\DateTime and modifier %s');
+Assert::exception(
+	fn() => $conn->translate('SELECT %s', new DateTime('1212-09-26')),
+	Dibi\Exception::class,
+	'SQL translate error: Invalid combination of type Dibi\DateTime and modifier %s',
+);
 
 
 
@@ -268,9 +273,11 @@ if ($config['system'] === 'postgre') {
 }
 
 
-$e = Assert::exception(function () use ($conn) {
-	$conn->translate("SELECT '");
-}, Dibi\Exception::class, 'SQL translate error: Alone quote');
+$e = Assert::exception(
+	fn() => $conn->translate("SELECT '"),
+	Dibi\Exception::class,
+	'SQL translate error: Alone quote',
+);
 Assert::same('SELECT **Alone quote**', $e->getSql());
 
 Assert::match(
@@ -647,13 +654,17 @@ Assert::same(
 	$conn->translate('INSERT INTO [test.*]'),
 );
 
-Assert::exception(function () use ($conn) {
-	$conn->translate('INSERT INTO %i', 'ahoj');
-}, Dibi\Exception::class, "Expected number, 'ahoj' given.");
+Assert::exception(
+	fn() => $conn->translate('INSERT INTO %i', 'ahoj'),
+	Dibi\Exception::class,
+	"Expected number, 'ahoj' given.",
+);
 
-Assert::exception(function () use ($conn) {
-	$conn->translate('INSERT INTO %f', 'ahoj');
-}, Dibi\Exception::class, "Expected number, 'ahoj' given.");
+Assert::exception(
+	fn() => $conn->translate('INSERT INTO %f', 'ahoj'),
+	Dibi\Exception::class,
+	"Expected number, 'ahoj' given.",
+);
 
 
 Assert::same(

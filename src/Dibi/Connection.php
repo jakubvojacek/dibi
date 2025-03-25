@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Dibi;
 
+use JetBrains\PhpStorm\Language;
 use Traversable;
 
 
@@ -18,9 +19,19 @@ use Traversable;
  * @property-read int $affectedRows
  * @property-read int $insertId
  */
-class Connection implements IConnection
+class Connection
 {
-	use Strict;
+	private const Drivers = [
+		'firebird' => Drivers\Ibase\Connection::class,
+		'mysqli' => Drivers\MySQLi\Connection::class,
+		'odbc' => Drivers\ODBC\Connection::class,
+		'oracle' => Drivers\OCI8\Connection::class,
+		'pdo' => Drivers\PDO\Connection::class,
+		'postgre' => Drivers\PgSQL\Connection::class,
+		'sqlite3' => Drivers\SQLite3\Connection::class,
+		'sqlite' => Drivers\SQLite3\Connection::class,
+		'sqlsrv' => Drivers\SQLSrv\Connection::class,
+	];
 
 	/** function (Event $event); Occurs after query is executed */
 	public ?array $onEvent = [];
@@ -28,7 +39,8 @@ class Connection implements IConnection
 
 	/** @var string[]  resultset formats */
 	private array $formats;
-	private ?Driver $driver = null;
+	private ?Drivers\Connection $driver = null;
+	private Drivers\Engine $engine;
 	private ?Translator $translator = null;
 
 	/** @var array<string, callable(object): Expression | null> */
@@ -36,8 +48,6 @@ class Connection implements IConnection
 	private bool $sortTranslators = false;
 	private HashMap $substitutes;
 	private int $transactionDepth = 0;
-	private bool $isTransactional = false;
-	private bool $transactionStarted = false;
 
 
 	/**
@@ -77,10 +87,10 @@ class Connection implements IConnection
 		$this->config = $config;
 
 		$this->formats = [
-			Type::DATE => $this->config['result']['formatDate'],
-			Type::DATETIME => $this->config['result']['formatDateTime'],
+			Type::Date => $this->config['result']['formatDate'],
+			Type::DateTime => $this->config['result']['formatDateTime'],
 			Type::JSON => $this->config['result']['formatJson'] ?? 'array',
-			Type::TIME_INTERVAL => $this->config['result']['formatTimeInterval'] ?? null,
+			Type::TimeInterval => $this->config['result']['formatTimeInterval'] ?? null,
 		];
 
 		// profiler
@@ -107,25 +117,6 @@ class Connection implements IConnection
 	}
 
 
-	public function resetTransactionStatus(): void
-	{
-		$this->isTransactional = false;
-		$this->transactionStarted = false;
-	}
-
-
-	public function setTransactional(bool $isTransactional): void
-	{
-		$this->isTransactional = $isTransactional;
-	}
-
-
-	public function getTransactionStarted(): bool
-	{
-		return $this->transactionStarted;
-	}
-
-
 	/**
 	 * Automatically frees the resources allocated for this result set.
 	 */
@@ -142,17 +133,16 @@ class Connection implements IConnection
 	 */
 	final public function connect(): void
 	{
-		if ($this->config['driver'] instanceof Driver) {
+		if ($this->config['driver'] instanceof Drivers\Connection) {
 			$this->driver = $this->config['driver'];
 			$this->translator = new Translator($this);
 			return;
 
-		} elseif (is_subclass_of($this->config['driver'], Driver::class)) {
+		} elseif (is_subclass_of($this->config['driver'], Drivers\Connection::class)) {
 			$class = $this->config['driver'];
 
 		} else {
-			$class = preg_replace(['#\W#', '#sql#'], ['_', 'Sql'], ucfirst(strtolower($this->config['driver'])));
-			$class = "Dibi\\Drivers\\{$class}Driver";
+			$class = self::Drivers[strtolower($this->config['driver'])] ?? throw new Exception("Unknown driver '{$this->config['driver']}'.");
 			if (!class_exists($class)) {
 				throw new Exception("Unable to create instance of Dibi driver '$class'.");
 			}
@@ -218,7 +208,7 @@ class Connection implements IConnection
 	/**
 	 * Returns the driver and connects to a database in lazy mode.
 	 */
-	final public function getDriver(): Driver
+	final public function getDriver(): Drivers\Connection
 	{
 		if (!$this->driver) {
 			$this->connect();
@@ -232,16 +222,9 @@ class Connection implements IConnection
 	 * Generates (translates) and executes SQL query.
 	 * @throws Exception
 	 */
-	final public function query(mixed ...$args): Result
+	final public function query(#[Language('GenericSQL')] mixed ...$args): Result
 	{
-		$query = $this->translate(...$args);
-
-		if ($this->isTransactional === true && $this->transactionStarted === false) {
-			$this->transactionStarted = true;
-			$this->nativeQuery('START TRANSACTION');
-		}
-
-		return $this->nativeQuery($query);
+		return $this->nativeQuery($this->translate(...$args));
 	}
 
 
@@ -249,7 +232,7 @@ class Connection implements IConnection
 	 * Generates SQL query.
 	 * @throws Exception
 	 */
-	final public function translate(mixed ...$args): string
+	final public function translate(#[Language('GenericSQL')] mixed ...$args): string
 	{
 		if (!$this->driver) {
 			$this->connect();
@@ -262,7 +245,7 @@ class Connection implements IConnection
 	/**
 	 * Generates and prints SQL query.
 	 */
-	final public function test(mixed ...$args): bool
+	final public function test(#[Language('GenericSQL')] mixed ...$args): bool
 	{
 		try {
 			Helpers::dump($this->translate(...$args));
@@ -284,7 +267,7 @@ class Connection implements IConnection
 	 * Generates (translates) and returns SQL query as DataSource.
 	 * @throws Exception
 	 */
-	final public function dataSource(mixed ...$args): DataSource
+	final public function dataSource(#[Language('GenericSQL')] mixed ...$args): DataSource
 	{
 		return new DataSource($this->translate(...$args), $this);
 	}
@@ -294,7 +277,7 @@ class Connection implements IConnection
 	 * Executes the SQL query.
 	 * @throws Exception
 	 */
-	final public function nativeQuery(string $sql): Result
+	final public function nativeQuery(#[Language('SQL')] string $sql): Result
 	{
 		if (!$this->driver) {
 			$this->connect();
@@ -313,7 +296,7 @@ class Connection implements IConnection
 			throw $e;
 		}
 
-		$res = $this->createResultSet($res ?: new Drivers\NoDataResult(max(0, $this->driver->getAffectedRows())));
+		$res = $this->createResultSet($res ?: new Drivers\Dummy\Result(max(0, $this->driver->getAffectedRows())));
 		if ($event) {
 			$this->onEvent($event->done($res));
 		}
@@ -477,7 +460,7 @@ class Connection implements IConnection
 	/**
 	 * Result set factory.
 	 */
-	public function createResultSet(ResultDriver $resultDriver): Result
+	public function createResultSet(Drivers\Result $resultDriver): Result
 	{
 		return (new Result($resultDriver, $this->config['result']['normalize'] ?? true))
 			->setFormats($this->formats);
@@ -623,7 +606,7 @@ class Connection implements IConnection
 	 * Executes SQL query and fetch result - shortcut for query() & fetch().
 	 * @throws Exception
 	 */
-	public function fetch(mixed ...$args): ?array
+	public function fetch(#[Language('GenericSQL')] mixed ...$args): ?array
 	{
 		return $this->query($args)->fetch();
 	}
@@ -631,9 +614,10 @@ class Connection implements IConnection
 
 	/**
 	 * Executes SQL query and fetch results - shortcut for query() & fetchAll().
+	 * @return Row[]|array[]
 	 * @throws Exception
 	 */
-	public function fetchAll(mixed ...$args): array
+	public function fetchAll(#[Language('GenericSQL')] mixed ...$args): array
 	{
 		return $this->query($args)->fetchAll();
 	}
@@ -643,7 +627,7 @@ class Connection implements IConnection
 	 * Executes SQL query and fetch first column - shortcut for query() & fetchSingle().
 	 * @throws Exception
 	 */
-	public function fetchSingle(mixed ...$args): mixed
+	public function fetchSingle(#[Language('GenericSQL')] mixed ...$args): mixed
 	{
 		return $this->query($args)->fetchSingle();
 	}
@@ -653,7 +637,7 @@ class Connection implements IConnection
 	 * Executes SQL query and fetch pairs - shortcut for query() & fetchPairs().
 	 * @throws Exception
 	 */
-	public function fetchPairs(mixed ...$args): array
+	public function fetchPairs(#[Language('GenericSQL')] mixed ...$args): array
 	{
 		return $this->query($args)->fetchPairs();
 	}
@@ -685,6 +669,15 @@ class Connection implements IConnection
 	}
 
 
+	public function getDatabaseEngine(): Drivers\Engine
+	{
+		if (!$this->driver) { // TODO
+			$this->connect();
+		}
+		return $this->engine ??= $this->driver->getReflector();
+	}
+
+
 	/**
 	 * Gets a information about the current database.
 	 */
@@ -694,7 +687,7 @@ class Connection implements IConnection
 			$this->connect();
 		}
 
-		return new Reflection\Database($this->driver->getReflector(), $this->config['database'] ?? null);
+		return new Reflection\Database($this->getDatabaseEngine(), $this->config['database'] ?? null);
 	}
 
 

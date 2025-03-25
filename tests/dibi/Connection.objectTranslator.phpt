@@ -24,9 +24,11 @@ class Time extends DateTimeImmutable
 
 
 test('Without object translator', function () use ($conn) {
-	Assert::exception(function () use ($conn) {
-		$conn->translate('?', new Email);
-	}, Dibi\Exception::class, 'SQL translate error: Unexpected Email');
+	Assert::exception(
+		fn() => $conn->translate('?', new Email),
+		Dibi\Exception::class,
+		'SQL translate error: Unexpected Email',
+	);
 });
 
 
@@ -47,7 +49,7 @@ test('DateTime', function () use ($conn) {
 
 	// Without object translator, DateTime child is translated by driver
 	Assert::same(
-		$conn->getDriver()->escapeDateTime($stamp),
+		$conn->getDatabaseEngine()->escapeDateTime($stamp),
 		$conn->translate('?', $stamp),
 	);
 
@@ -65,15 +67,15 @@ test('DateTime', function () use ($conn) {
 
 	// With modifier, it is still translated by driver
 	Assert::same(
-		$conn->getDriver()->escapeDateTime($stamp),
+		$conn->getDatabaseEngine()->escapeDateTime($stamp),
 		$conn->translate('%dt', $stamp),
 	);
 	Assert::same(
-		$conn->getDriver()->escapeDateTime($stamp),
+		$conn->getDatabaseEngine()->escapeDateTime($stamp),
 		$conn->translate('%t', $stamp),
 	);
 	Assert::same(
-		$conn->getDriver()->escapeDate($stamp),
+		$conn->getDatabaseEngine()->escapeDate($stamp),
 		$conn->translate('%d', $stamp),
 	);
 
@@ -81,7 +83,7 @@ test('DateTime', function () use ($conn) {
 	// DateTimeImmutable as a Time parent is not affected and still translated by driver
 	$dt = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2022-11-22 12:13:14');
 	Assert::same(
-		$conn->getDriver()->escapeDateTime($dt),
+		$conn->getDatabaseEngine()->escapeDateTime($dt),
 		$conn->translate('?', $dt),
 	);
 
@@ -122,27 +124,32 @@ test('Complex structures', function () use ($conn) {
 test('Invalid translator', function () use ($conn) {
 	Assert::exception(
 		fn() => $conn->setObjectTranslator(fn($email) => 'foo'),
-		Dibi\Exception::class, "Object translator must have exactly one parameter with class typehint.",
+		Dibi\Exception::class,
+		'Object translator must have exactly one parameter with class typehint.',
 	);
 
 	Assert::exception(
 		fn() => $conn->setObjectTranslator(fn(string $email) => 'foo'),
-		Dibi\Exception::class, "Object translator must have exactly one parameter with non-nullable class typehint, got 'string'.",
+		Dibi\Exception::class,
+		"Object translator must have exactly one parameter with non-nullable class typehint, got 'string'.",
 	);
 
 	Assert::exception(
 		fn() => $conn->setObjectTranslator(fn(Email|bool $email) => 'foo'),
-		Dibi\Exception::class, "Object translator must have exactly one parameter with non-nullable class typehint, got 'bool'.",
+		Dibi\Exception::class,
+		"Object translator must have exactly one parameter with non-nullable class typehint, got 'bool'.",
 	);
 
 	Assert::exception(
 		fn() => $conn->setObjectTranslator(fn(Email|null $email) => 'foo'),
-		Dibi\Exception::class, "Object translator must have exactly one parameter with non-nullable class typehint, got '?Email'.",
+		Dibi\Exception::class,
+		"Object translator must have exactly one parameter with non-nullable class typehint, got '?Email'.",
 	);
 
 	$conn->setObjectTranslator(fn(Email $email) => 'foo');
 	Assert::exception(
 		fn() => $conn->translate('?', new Email),
-		Dibi\Exception::class, "Object translator for class 'Email' returned 'string' but Dibi\Expression expected.",
+		Dibi\Exception::class,
+		"Object translator for class 'Email' returned 'string' but Dibi\\Expression expected.",
 	);
 });

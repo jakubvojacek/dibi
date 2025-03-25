@@ -15,8 +15,6 @@ namespace Dibi;
  */
 class DateTime extends \DateTimeImmutable
 {
-	use Strict;
-
 	public function __construct(string|int $time = 'now', ?\DateTimeZone $timezone = null)
 	{
 		$timezone = $timezone ?: new \DateTimeZone(date_default_timezone_get());

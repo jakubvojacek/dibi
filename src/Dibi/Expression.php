@@ -15,9 +15,7 @@ namespace Dibi;
  */
 class Expression
 {
-	use Strict;
-
-	private array $values;
+	private readonly array $values;
 
 
 	public function __construct(...$values)

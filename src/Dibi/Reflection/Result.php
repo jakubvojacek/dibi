@@ -20,10 +20,6 @@ use Dibi;
  */
 class Result
 {
-	use Dibi\Strict;
-
-	private Dibi\ResultDriver $driver;
-
 	/** @var Column[]|null */
 	private ?array $columns;
 
@@ -31,9 +27,9 @@ class Result
 	private ?array $names;
 
 
-	public function __construct(Dibi\ResultDriver $driver)
-	{
-		$this->driver = $driver;
+	public function __construct(
+		private readonly Dibi\Drivers\Result $driver,
+	) {
 	}
 
 
@@ -82,7 +78,7 @@ class Result
 	{
 		if (!isset($this->columns)) {
 			$this->columns = [];
-			$reflector = $this->driver instanceof Dibi\Reflector
+			$reflector = $this->driver instanceof Dibi\Drivers\Engine
 				? $this->driver
 				: null;
 			foreach ($this->driver->getResultColumns() as $info) {

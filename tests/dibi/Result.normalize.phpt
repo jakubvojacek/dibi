@@ -25,10 +25,10 @@ class MockResult extends Dibi\Result
 }
 
 
-test('', function () {
+test('native text conversion preserves boolean values', function () {
 	$result = new MockResult;
-	$result->setType('col', Type::TEXT);
-	$result->setFormat(Type::TEXT, 'native');
+	$result->setType('col', Type::Text);
+	$result->setFormat(Type::Text, 'native');
 
 	Assert::same(['col' => null], $result->test(['col' => null]));
 	Assert::same(['col' => true], $result->test(['col' => true]));
@@ -36,9 +36,9 @@ test('', function () {
 });
 
 
-test('', function () {
+test('boolean conversion from diverse representations', function () {
 	$result = new MockResult;
-	$result->setType('col', Type::BOOL);
+	$result->setType('col', Type::Bool);
 
 	Assert::same(['col' => null], $result->test(['col' => null]));
 	Assert::same(['col' => true], $result->test(['col' => true]));
@@ -58,9 +58,9 @@ test('', function () {
 });
 
 
-test('', function () {
+test('text conversion of booleans and numerics', function () {
 	$result = new MockResult;
-	$result->setType('col', Type::TEXT);
+	$result->setType('col', Type::Text);
 
 	Assert::same(['col' => null], $result->test(['col' => null]));
 	Assert::same(['col' => '1'], $result->test(['col' => true]));
@@ -74,9 +74,9 @@ test('', function () {
 });
 
 
-test('', function () {
+test('float conversion with various numeric formats', function () {
 	$result = new MockResult;
-	$result->setType('col', Type::FLOAT);
+	$result->setType('col', Type::Float);
 
 	Assert::same(['col' => null], $result->test(['col' => null]));
 	Assert::same(['col' => 1.0], $result->test(['col' => true]));
@@ -117,6 +117,37 @@ test('', function () {
 	Assert::same(['col' => '1.1e+10'], $result->test(['col' => '001.1e+10']));
 	Assert::notSame(['col' => '1.1e+1'], $result->test(['col' => '1.1e+10']));
 
+	// negative
+	Assert::same(['col' => -0.0], $result->test(['col' => '-']));
+	Assert::same(['col' => -0.0], $result->test(['col' => '-0']));
+	Assert::same(['col' => -1.0], $result->test(['col' => '-1']));
+	Assert::same(['col' => -0.0], $result->test(['col' => '-.0']));
+	Assert::same(['col' => -0.1], $result->test(['col' => '-.1']));
+	Assert::same(['col' => -0.0], $result->test(['col' => '-0.0']));
+	Assert::same(['col' => -0.1], $result->test(['col' => '-0.1']));
+	Assert::same(['col' => -0.0], $result->test(['col' => '-0.000']));
+	Assert::same(['col' => -0.1], $result->test(['col' => '-0.100']));
+	Assert::same(['col' => -1.0], $result->test(['col' => '-1.0']));
+	Assert::same(['col' => -1.1], $result->test(['col' => '-1.1']));
+	Assert::same(['col' => -1.0], $result->test(['col' => '-1.000']));
+	Assert::same(['col' => -1.1], $result->test(['col' => '-1.100']));
+	Assert::same(['col' => -1.0], $result->test(['col' => '-001.000']));
+	Assert::same(['col' => -1.1], $result->test(['col' => '-001.100']));
+	Assert::same(['col' => -10.0], $result->test(['col' => '-10']));
+	Assert::same(['col' => -11.0], $result->test(['col' => '-11']));
+	Assert::same(['col' => -10.0], $result->test(['col' => '-0010']));
+	Assert::same(['col' => -11.0], $result->test(['col' => '-0011']));
+	Assert::same(['col' => '-0.00000000000000000001'], $result->test(['col' => '-0.00000000000000000001']));
+	Assert::same(['col' => '-12345678901234567890'], $result->test(['col' => '-12345678901234567890']));
+	Assert::same(['col' => '-12345678901234567890'], $result->test(['col' => '-012345678901234567890']));
+	Assert::same(['col' => '-12345678901234567890'], $result->test(['col' => '-12345678901234567890.000']));
+	Assert::same(['col' => '-12345678901234567890.1'], $result->test(['col' => '-012345678901234567890.100']));
+
+	Assert::same(['col' => '-1.1e+10'], $result->test(['col' => '-1.1e+10']));
+	Assert::same(['col' => '-1.1e-10'], $result->test(['col' => '-1.1e-10']));
+	Assert::same(['col' => '-1.1e+10'], $result->test(['col' => '-001.1e+10']));
+	Assert::notSame(['col' => '-1.1e+1'], $result->test(['col' => '-1.1e+10']));
+
 	setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'deu_deu');
 	Assert::same(['col' => 0.0], $result->test(['col' => '']));
 	Assert::same(['col' => 0.0], $result->test(['col' => '0']));
@@ -147,25 +178,54 @@ test('', function () {
 	Assert::same(['col' => 0.0], $result->test(['col' => 0.0]));
 	Assert::same(['col' => 1.0], $result->test(['col' => 1]));
 	Assert::same(['col' => 1.0], $result->test(['col' => 1.0]));
+
+	// Same but negative
+	Assert::same(['col' => -0.0], $result->test(['col' => '-']));
+	Assert::same(['col' => -0.0], $result->test(['col' => '-0']));
+	Assert::same(['col' => -1.0], $result->test(['col' => '-1']));
+	Assert::same(['col' => -0.0], $result->test(['col' => '-.0']));
+	Assert::same(['col' => -0.1], $result->test(['col' => '-.1']));
+	Assert::same(['col' => -0.0], $result->test(['col' => '-0.0']));
+	Assert::same(['col' => -0.1], $result->test(['col' => '-0.1']));
+	Assert::same(['col' => -0.0], $result->test(['col' => '-0.000']));
+	Assert::same(['col' => -0.1], $result->test(['col' => '-0.100']));
+	Assert::same(['col' => -1.0], $result->test(['col' => '-1.0']));
+	Assert::same(['col' => -1.1], $result->test(['col' => '-1.1']));
+	Assert::same(['col' => -1.0], $result->test(['col' => '-1.000']));
+	Assert::same(['col' => -1.1], $result->test(['col' => '-1.100']));
+	Assert::same(['col' => -1.0], $result->test(['col' => '-001.000']));
+	Assert::same(['col' => -1.1], $result->test(['col' => '-001.100']));
+	Assert::same(['col' => -10.0], $result->test(['col' => '-10']));
+	Assert::same(['col' => -11.0], $result->test(['col' => '-11']));
+	Assert::same(['col' => -10.0], $result->test(['col' => '-0010']));
+	Assert::same(['col' => -11.0], $result->test(['col' => '-0011']));
+	Assert::same(['col' => '-0.00000000000000000001'], $result->test(['col' => '-0.00000000000000000001']));
+	Assert::same(['col' => '-12345678901234567890'], $result->test(['col' => '-12345678901234567890']));
+	Assert::same(['col' => '-12345678901234567890'], $result->test(['col' => '-012345678901234567890']));
+	Assert::same(['col' => '-12345678901234567890'], $result->test(['col' => '-12345678901234567890.000']));
+	Assert::same(['col' => '-12345678901234567890.1'], $result->test(['col' => '-012345678901234567890.100']));
+
+	Assert::same(['col' => -0.0], $result->test(['col' => -0]));
+	Assert::same(['col' => -0.0], $result->test(['col' => -0.0]));
+	Assert::same(['col' => -1.0], $result->test(['col' => -1]));
+	Assert::same(['col' => -1.0], $result->test(['col' => -1.0]));
+
 	setlocale(LC_NUMERIC, 'C');
 });
 
 
-test('', function () {
+test('strict integer conversion with error on empty string', function () {
 	$result = new MockResult;
-	$result->setType('col', Type::INTEGER);
+	$result->setType('col', Type::Integer);
 
 	Assert::same(['col' => null], $result->test(['col' => null]));
 	Assert::same(['col' => 1], $result->test(['col' => true]));
 	Assert::same(['col' => 0], $result->test(['col' => false]));
 
-	if (PHP_VERSION_ID < 80000) {
-		Assert::same(['col' => 0], @$result->test(['col' => ''])); // triggers warning since PHP 7.1
-	} else {
-		Assert::exception(function () use ($result) {
-			Assert::same(['col' => 0], $result->test(['col' => '']));
-		}, TypeError::class);
-	}
+	Assert::exception(
+		fn() => Assert::same(['col' => 0], $result->test(['col' => ''])),
+		TypeError::class,
+	);
 
 	Assert::same(['col' => 0], $result->test(['col' => '0']));
 	Assert::same(['col' => 1], $result->test(['col' => '1']));
@@ -184,14 +244,15 @@ test('', function () {
 });
 
 
-test('', function () {
+test('dateTime conversion with object instantiation', function () {
 	$result = new MockResult;
-	$result->setType('col', Type::DATETIME);
+	$result->setType('col', Type::DateTime);
 
 	Assert::same(['col' => null], $result->test(['col' => null]));
-	Assert::exception(function () use ($result) {
-		$result->test(['col' => true]);
-	}, TypeError::class);
+	Assert::exception(
+		fn() => $result->test(['col' => true]),
+		TypeError::class,
+	);
 	Assert::same(['col' => null], $result->test(['col' => false]));
 
 	Assert::same(['col' => null], $result->test(['col' => '']));
@@ -202,15 +263,16 @@ test('', function () {
 });
 
 
-test('', function () {
+test('dateTime conversion using custom format', function () {
 	$result = new MockResult;
-	$result->setType('col', Type::DATETIME);
-	$result->setFormat(Type::DATETIME, 'Y-m-d H:i:s');
+	$result->setType('col', Type::DateTime);
+	$result->setFormat(Type::DateTime, 'Y-m-d H:i:s');
 
 	Assert::same(['col' => null], $result->test(['col' => null]));
-	Assert::exception(function () use ($result) {
-		$result->test(['col' => true]);
-	}, TypeError::class);
+	Assert::exception(
+		fn() => $result->test(['col' => true]),
+		TypeError::class,
+	);
 	Assert::same(['col' => null], $result->test(['col' => false]));
 
 	Assert::same(['col' => null], $result->test(['col' => '']));
@@ -221,14 +283,15 @@ test('', function () {
 });
 
 
-test('', function () {
+test('date conversion to DateTime instance', function () {
 	$result = new MockResult;
-	$result->setType('col', Type::DATE);
+	$result->setType('col', Type::Date);
 
 	Assert::same(['col' => null], $result->test(['col' => null]));
-	Assert::exception(function () use ($result) {
-		$result->test(['col' => true]);
-	}, TypeError::class);
+	Assert::exception(
+		fn() => $result->test(['col' => true]),
+		TypeError::class,
+	);
 	Assert::same(['col' => null], $result->test(['col' => false]));
 
 	Assert::same(['col' => null], $result->test(['col' => '']));
@@ -237,14 +300,15 @@ test('', function () {
 });
 
 
-test('', function () {
+test('time conversion to DateTime instance', function () {
 	$result = new MockResult;
-	$result->setType('col', Type::TIME);
+	$result->setType('col', Type::Time);
 
 	Assert::same(['col' => null], $result->test(['col' => null]));
-	Assert::exception(function () use ($result) {
-		$result->test(['col' => true]);
-	}, TypeError::class);
+	Assert::exception(
+		fn() => $result->test(['col' => true]),
+		TypeError::class,
+	);
 	Assert::same(['col' => null], $result->test(['col' => false]));
 
 	Assert::same(['col' => null], $result->test(['col' => '']));

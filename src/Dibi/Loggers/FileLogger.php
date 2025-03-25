@@ -17,19 +17,11 @@ use Dibi;
  */
 class FileLogger
 {
-	use Dibi\Strict;
-
-	/** Name of the file where SQL errors should be logged */
-	public string $file;
-	public int $filter;
-	private bool $errorsOnly;
-
-
-	public function __construct(string $file, ?int $filter = null, bool $errorsOnly = false)
-	{
-		$this->file = $file;
-		$this->filter = $filter ?: Dibi\Event::QUERY;
-		$this->errorsOnly = $errorsOnly;
+	public function __construct(
+		public string $file,
+		public int $filter = Dibi\Event::QUERY,
+		private bool $errorsOnly = false,
+	) {
 	}
 
 
@@ -72,7 +64,7 @@ class FileLogger
 	{
 		$driver = $event->connection->getConfig('driver');
 		$message .=
-			"\n-- driver: " . (is_object($driver) ? $driver::class : $driver) . '/' . $event->connection->getConfig('name')
+			"\n-- driver: " . get_debug_type($driver) . '/' . $event->connection->getConfig('name')
 			. "\n-- " . date('Y-m-d H:i:s')
 			. "\n\n";
 		file_put_contents($this->file, $message, FILE_APPEND | LOCK_EX);

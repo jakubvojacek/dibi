@@ -37,14 +37,13 @@ declare(strict_types=1);
  */
 class dibi
 {
-	use Dibi\Strict;
+	public const Version = '6.0-dev';
 
-	public const
-		AFFECTED_ROWS = 'a',
-		IDENTIFIER = 'n';
+	public const VERSION = self::Version;
 
-	/** version */
-	public const VERSION = '5.0-dev';
+	public const AFFECTED_ROWS = Dibi\Fluent::AffectedRows;
+
+	public const IDENTIFIER = Dibi\Fluent::Identifier;
 
 	/** sorting order */
 	public const

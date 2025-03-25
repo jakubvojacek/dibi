@@ -12,8 +12,6 @@ namespace Dibi;
 
 class Helpers
 {
-	use Strict;
-
 	private static HashMap $types;
 
 
@@ -158,15 +156,15 @@ class Helpers
 
 
 	/** @internal */
-	public static function escape(Driver $driver, $value, string $type): string
+	public static function escape(Drivers\Connection $driver, $value, string $type): string
 	{
 		$types = [
-			Type::TEXT => 'text',
-			Type::BINARY => 'binary',
-			Type::BOOL => 'bool',
-			Type::DATE => 'date',
-			Type::DATETIME => 'datetime',
-			\dibi::IDENTIFIER => 'identifier',
+			Type::Text => 'text',
+			Type::Binary => 'binary',
+			Type::Bool => 'bool',
+			Type::Date => 'date',
+			Type::DateTime => 'datetime',
+			Fluent::Identifier => 'identifier',
 		];
 		if (isset($types[$type])) {
 			return $driver->{'escape' . $types[$type]}($value);
@@ -183,16 +181,16 @@ class Helpers
 	public static function detectType(string $type): ?string
 	{
 		$patterns = [
-			'^_' => Type::TEXT, // PostgreSQL arrays
-			'RANGE$' => Type::TEXT, // PostgreSQL range types
-			'BYTEA|BLOB|BIN' => Type::BINARY,
-			'TEXT|CHAR|POINT|INTERVAL|STRING' => Type::TEXT,
-			'YEAR|BYTE|COUNTER|SERIAL|INT|LONG|SHORT|^TINY$' => Type::INTEGER,
-			'CURRENCY|REAL|MONEY|FLOAT|DOUBLE|DECIMAL|NUMERIC|NUMBER' => Type::FLOAT,
-			'^TIME$' => Type::TIME,
-			'TIME' => Type::DATETIME, // DATETIME, TIMESTAMP
-			'DATE' => Type::DATE,
-			'BOOL' => Type::BOOL,
+			'^_' => Type::Text, // PostgreSQL arrays
+			'RANGE$' => Type::Text, // PostgreSQL range types
+			'BYTEA|BLOB|BIN' => Type::Binary,
+			'TEXT|CHAR|POINT|INTERVAL|STRING' => Type::Text,
+			'YEAR|BYTE|COUNTER|SERIAL|INT|LONG|SHORT|^TINY$' => Type::Integer,
+			'CURRENCY|REAL|MONEY|FLOAT|DOUBLE|DECIMAL|NUMERIC|NUMBER' => Type::Float,
+			'^TIME$' => Type::Time,
+			'TIME' => Type::DateTime, // DATETIME, TIMESTAMP
+			'DATE' => Type::Date,
+			'BOOL' => Type::Bool,
 			'JSON' => Type::JSON,
 		];
 
@@ -210,7 +208,7 @@ class Helpers
 	public static function getTypeCache(): HashMap
 	{
 		if (!isset(self::$types)) {
-			self::$types = new HashMap([self::class, 'detectType']);
+			self::$types = new HashMap(self::detectType(...));
 		}
 
 		return self::$types;
