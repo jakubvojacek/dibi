@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9877bb52-5c60-4de5-a98d-ba05c9bc53dc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Dibi/Bridges/Nette/DibiExtension3.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Dibi/Drivers/Connection.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Dibi/Drivers/Engine.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Dibi/Drivers/Engines/OracleEngine.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Dibi/Drivers/PDO/Connection.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Dibi/Drivers/Result.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Dibi/IDataSource.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/coding-style.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/coding-style.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/static-analysis.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/static-analysis.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/tests.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/tests.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appveyor.yml" beforeDir="false" afterPath="$PROJECT_DIR$/appveyor.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/result-set-data-types.php" beforeDir="false" afterPath="$PROJECT_DIR$/examples/result-set-data-types.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/using-substitutions.php" beforeDir="false" afterPath="$PROJECT_DIR$/examples/using-substitutions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Bridges/Nette/DibiExtension22.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Bridges/Nette/DibiExtension22.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Bridges/Nette/config.sample.neon" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Bridges/Nette/config.sample.neon" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Bridges/Tracy/Panel.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Bridges/Tracy/Panel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Connection.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Connection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/DataSource.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/DataSource.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/DateTime.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/DateTime.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/DummyDriver.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/Dummy/Connection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/FirebirdDriver.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/Firebird/Connection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/FirebirdReflector.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/Engines/FirebirdEngine.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/FirebirdResult.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/Firebird/Result.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/MySqlReflector.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/Engines/MySQLEngine.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/MySqliDriver.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/MySQLi/Connection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/MySqliResult.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/MySQLi/Result.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/NoDataResult.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/Dummy/Result.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/OdbcDriver.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/ODBC/Connection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/OdbcReflector.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/Engines/ODBCEngine.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/OdbcResult.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/ODBC/Result.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/OracleDriver.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/OCI8/Connection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/OracleReflector.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/OracleResult.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/OCI8/Result.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/PdoDriver.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/PdoResult.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/PDO/Result.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/PostgreDriver.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/PgSQL/Connection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/PostgreReflector.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/Engines/PostgreSQLEngine.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/PostgreResult.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/PgSQL/Result.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/Sqlite3Driver.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/Sqlite3Result.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/SqliteDriver.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/SQLite3/Connection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/SqliteReflector.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/Engines/SQLiteEngine.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/SqliteResult.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/SQLite3/Result.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/SqlsrvDriver.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/SQLSrv/Connection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/SqlsrvReflector.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/Engines/SQLServerEngine.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Drivers/SqlsrvResult.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Drivers/SQLSrv/Result.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Event.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Event.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Expression.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Expression.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Fluent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Fluent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/HashMap.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/HashMap.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Helpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Helpers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Literal.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Literal.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Loggers/FileLogger.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Loggers/FileLogger.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Reflection/Column.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Reflection/Column.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Reflection/Database.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Reflection/Database.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Reflection/ForeignKey.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Reflection/ForeignKey.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Reflection/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Reflection/Index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Reflection/Result.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Reflection/Result.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Reflection/Table.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Reflection/Table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Result.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Result.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/ResultIterator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/ResultIterator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Row.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Row.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Strict.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Translator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Translator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/Type.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/Type.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/dibi.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/dibi.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/exceptions.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dibi/exceptions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dibi/interfaces.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Connection.connect.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/Connection.connect.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Connection.objectTranslator.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/Connection.objectTranslator.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Connection.transactions.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/Connection.transactions.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Fluent.fetch.limit.mssql.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/Fluent.fetch.limit.mssql.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Fluent.select.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/Fluent.select.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Helpers.intVal().phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/Helpers.intVal().phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/PdoDriver.providedConnection.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/PdoDriver.providedConnection.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Postgre.like.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/Postgre.like.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Result.normalize.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/Result.normalize.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Result.types.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/Result.types.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Row.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/Row.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Sqlsrv.limits.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/Sqlsrv.limits.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Strict.phpt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Translator.DateInterval.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/Translator.DateInterval.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Translator.enums.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/Translator.enums.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Translator.like.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/Translator.like.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/Translator.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/Translator.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/bootstrap.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/bootstrap.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/exceptions.mysql.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/exceptions.mysql.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/exceptions.postgre.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/exceptions.postgre.phpt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/dibi/exceptions.sqlite.phpt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/dibi/exceptions.sqlite.phpt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="/opt/homebrew/Cellar/php/8.3.6/bin/php" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2unglP05HLB92g8Ho4GhX6tx9p8" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/martinsedlacek/Sites/dibi&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PS-241.19072.22" />
+        <option value="bundled-php-predefined-ba97393d7c68-48a1a656d44e-com.jetbrains.php.sharedIndexes-PS-241.19072.22" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9877bb52-5c60-4de5-a98d-ba05c9bc53dc" name="Changes" comment="" />
+      <created>1742889902919</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1742889902919</updated>
+      <workItem from="1742889904258" duration="1817000" />
+      <workItem from="1742892563943" duration="2808000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
